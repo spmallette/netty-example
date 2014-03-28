@@ -39,15 +39,13 @@ public class ServerIntegrateTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        thread = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    new Server().run();
-                } catch (InterruptedException ie) {
-                    logger.info("Shutting down Server");
-                } catch (Exception ex) {
-                    logger.error("Could not start Server for tests", ex);
-                }
+        thread = new Thread(() -> {
+            try {
+                new Server().run();
+            } catch (InterruptedException ie) {
+                logger.info("Shutting down Server");
+            } catch (Exception ex) {
+                logger.error("Could not start Server for tests", ex);
             }
         });
 

@@ -51,7 +51,7 @@ public class Server {
         public void initChannel(final SocketChannel ch) throws Exception {
             final ChannelPipeline pipeline = ch.pipeline();
             pipeline.addLast("http-request-decoder", new HttpRequestDecoder());
-            pipeline.addLast("aggregator", new HttpObjectAggregator(65536));
+            pipeline.addLast("aggregator", new HttpObjectAggregator(1));
             pipeline.addLast("http-response-encoder", new HttpResponseEncoder());
             pipeline.addLast("request-handler", new WebSocketServerProtocolHandler("/websocket"));
             pipeline.addLast("handler", new SomeHandler());
@@ -60,7 +60,7 @@ public class Server {
 
     public class SomeHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
         @Override
-        protected void messageReceived(ChannelHandlerContext channelHandlerContext, TextWebSocketFrame textWebSocketFrame) throws Exception {
+        protected void channelRead0(ChannelHandlerContext channelHandlerContext, TextWebSocketFrame textWebSocketFrame) throws Exception {
             final String x = textWebSocketFrame.text();
             // uncomment to print request
             // /logger.info("Request received: {}", x);
