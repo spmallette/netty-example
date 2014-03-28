@@ -15,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @author Stephen Mallette (http://stephen.genoprime.com)
@@ -73,7 +75,8 @@ public class ServerIntegrateTest {
         final String url = "ws://localhost:8182/websocket";
         final WebSocketClient client = new WebSocketClient(url);
         client.open();
-        client.<String>eval(UUID.randomUUID().toString() + ":a");
+        final String fatty = IntStream.range(0, 1024).mapToObj(String::valueOf).collect(Collectors.joining());
+        client.<String>eval(UUID.randomUUID().toString() + ":" + fatty);
         client.close();
     }
 
